@@ -31,12 +31,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  TextEditingController controllerPeso = TextEditingController();
+  TextEditingController controllerAltura = TextEditingController();
+  String resultadoIMC = '';
+  //String textoPeso = '';
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: TextFormField(
+                //onChanged: (value) {
+                //textoPeso = value;
+                //},
+                keyboardType: const TextInputType.numberWithOptions(),
+                controller: controllerPeso,
                 decoration: const InputDecoration(
                     labelText: "Peso(kg)",
                     border: OutlineInputBorder(
@@ -72,19 +75,40 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: TextFormField(
+                keyboardType: const TextInputType.numberWithOptions(),
+                controller: controllerAltura,
                 decoration: const InputDecoration(
                     labelText: "Altura(cm)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)))),
               ),
             ),
+            const SizedBox(
+              height: 32,
+            ),
+            Text(
+              resultadoIMC,
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+                width: 200,
+                height: 40,
+                child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        num numAux = (num.parse(controllerPeso.text) /
+                            (num.parse(controllerAltura.text) *
+                                num.parse(controllerAltura.text)));
+
+                        resultadoIMC = numAux.toStringAsFixed(2);
+                      });
+                    },
+                    child: const Text('Calcular')))
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
